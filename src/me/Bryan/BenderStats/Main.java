@@ -2,16 +2,20 @@ package me.Bryan.BenderStats;
 
 import java.sql.SQLException;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.Bryan.BenderStats.Listeners.PlayerLogin;
+import me.Bryan.BenderStats.Methods.KillDeathRatio;
 import me.Bryan.BenderStats.Methods.KillStreakMethod;
 import me.Bryan.BenderStats.SQL.MySQL;
 
 public class Main extends JavaPlugin {
 	public static Main main;
 	private final static KillStreakMethod killStreakMethod = new KillStreakMethod(main);
-
+	private final static KillDeathRatio killDeathRatio = new KillDeathRatio(main);
+	public FileConfiguration config = main.getConfig();
+	
 	public void onDisable() {
 		try {
 			if (MySQL.connection != null && !MySQL.connection.isClosed()) {
@@ -20,10 +24,12 @@ public class Main extends JavaPlugin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		saveConfig();
 	}
 
 	public void onEnable() {
 		registerListeners();
+		reloadConfig();
 	}
 
 	public void registerListeners() {
@@ -37,6 +43,10 @@ public class Main extends JavaPlugin {
 
 	public KillStreakMethod getKillStreakMethod() {
 		return killStreakMethod;
+	}
+	
+	public KillDeathRatio getKDRC() {
+		return killDeathRatio;
 	}
 
 }

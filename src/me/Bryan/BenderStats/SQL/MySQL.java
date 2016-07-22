@@ -8,15 +8,15 @@ import java.sql.ResultSet;
 import org.bukkit.entity.Player;
 
 public class MySQL {
-	private static int ip;
-	private static int port;
-	private static String password;
-	private static String name;
+	
+	static final String USER = "user";
+	static final String PASS = "pass";
+	static final String DB_NAME = "jdbc:mysql://ip:port/database";
 	public static Connection connection;
 
 	public synchronized static void openConnection() {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + name, name, password);
+			connection = DriverManager.getConnection(DB_NAME, USER, PASS);
 
 		} catch (Exception e) {
 			e.printStackTrace();

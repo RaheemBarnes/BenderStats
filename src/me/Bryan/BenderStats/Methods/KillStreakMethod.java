@@ -54,6 +54,8 @@ public class KillStreakMethod implements Listener {
 				}
 			}
 		}
+		
+		
 		// MySQL Basis
 		MySQL.getConnection();
 		try {
