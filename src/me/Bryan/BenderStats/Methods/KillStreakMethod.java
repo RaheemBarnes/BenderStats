@@ -4,22 +4,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import me.Bryan.BenderStats.Main;
 import me.Bryan.BenderStats.SQL.MySQL;
+import me.Bryan.BenderStats.Utils.ChatColor;
 
 public class KillStreakMethod implements Listener {
 	public HashMap<String, Integer> killstreak = new HashMap<String, Integer>();
 	Main main;
+	int percentageValue;
+	int aRandom = RandomUtils.nextInt(101);
+
 
 	public KillStreakMethod(Main main) {
 		this.main = main;
@@ -51,6 +60,19 @@ public class KillStreakMethod implements Listener {
 				}
 				if(main.getKillStreakMethod().killstreak.containsKey(killed.getName())) {
 					main.getKillStreakMethod().killstreak.put(killed.getName(), 0);
+				}
+				if(killed instanceof Player) {
+				if(aRandom<=percentageValue) {
+					event.getDrops().clear();
+					ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+					SkullMeta meta = (SkullMeta) skull.getItemMeta();
+					
+					meta.setOwner(killed.getName());
+					meta.setDisplayName(ChatColor.Color("&6"+killed.getName()));
+					skull.setItemMeta(meta);
+					event.getDrops().add(skull);
+					
+				}
 				}
 			}
 		}
